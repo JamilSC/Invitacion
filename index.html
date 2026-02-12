@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XV Viri - Invitación Final</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;600&family=Cinzel&display=swap" rel="stylesheet">
+    <style>
+        :root { --rosa: #ff85a2; --oro: #d4af37; --rosa-claro: #fff0f5; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            text-align: center; 
+            background-color: white;
+            background-image: url('https://www.transparenttextures.com/patterns/stardust.png');
+        }
+        
+        #landing {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100vh;
+            background: radial-gradient(circle, #ffffff 0%, #bbdefb 100%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: 1s all ease;
+            overflow: hidden;
+        }
+
+        .container { 
+            width: 100%; 
+            max-width: 480px; 
+            margin: 0 auto; 
+            background: white; 
+            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            display: none;
+            opacity: 0;
+            transition: 1.5s opacity ease;
+        }
+
+        section { padding: 40px 20px; position: relative; overflow: hidden; }
+
+        /* AJUSTE PARA PANTALLA COMPLETA TOTAL (dvh) */
+        .hero-section {
+            height: 100vh;
+            height: 100dvh; 
+            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), 
+                              url('membrillo.jpg'); 
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .nombre-viri { font-family: 'Great Vibes', cursive; font-size: 5rem; color: var(--rosa); margin: 10px 0; }
+        .hero-section .nombre-viri { color: white; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
+        
+        .menciones { padding: 50px 20px; border-bottom: 1px dashed var(--rosa); }
+        .label-honor { font-family: 'Great Vibes', cursive; font-size: 2.2rem; color: var(--rosa); margin-top: 20px; }
+        .nombre-honor { text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; font-weight: 600; margin: 5px 0; }
+
+        .ubicaciones-section {
+            background-image: radial-gradient(circle at top right, rgba(255,133,162,0.1), transparent),
+                              url('https://www.transparenttextures.com/patterns/pink-dust.png');
+            padding: 60px 20px;
+        }
+        
+        .icon-gold { width: 50px; margin-bottom: 10px; filter: sepia(1) saturate(5) hue-rotate(340deg); }
+        
+        .btn-premium {
+            background: linear-gradient(to right, #eebccb, #d4af37);
+            color: white;
+            padding: 12px 35px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: inline-block;
+            font-weight: bold;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            margin-top: 15px;
+            border: none;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .decor-heart { position: absolute; right: -20px; top: 20%; width: 100px; opacity: 0.5; transform: rotate(15deg); }
+
+        .reveal { opacity: 0; transform: translateY(20px); transition: 0.8s all ease; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        #confirmPopup {
+            position: fixed;
+            bottom: -100%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            background: white;
+            padding: 25px;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.15);
+            z-index: 10000;
+            transition: 0.8s bottom cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        /* AJUSTE DE POSICIÓN DEL BOTÓN FLOTANTE */
+        #btnFlotante {
+            position: fixed;
+            bottom: 30px; 
+            right: 25px; 
+            background: #25d366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: none; 
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 999;
+            cursor: pointer;
+            border: 2px solid white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .input-form {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        @keyframes fly {
+            0% { transform: translateY(0) rotate(0); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="landing">
+        <img src="https://www.transparentpng.com/download/floral/blue-flower-decoration-png-transparent-17.png" style="position: absolute; top: -40px; left: -40px; width: 280px; transform: rotate(10deg); opacity: 0.9;">
+        <img src="https://www.transparentpng.com/download/floral/blue-flower-decoration-png-transparent-17.png" style="position: absolute; bottom: -40px; right: -40px; width: 280px; transform: rotate(190deg); opacity: 0.9;">
+        <div style="position: absolute; top: 15%; right: 15%; font-size: 3rem; animation: fly 4s infinite ease-in-out;">🦋</div>
+        <div style="position: absolute; bottom: 20%; left: 10%; font-size: 2.5rem; animation: fly 5s infinite ease-in-out; transform: scaleX(-1);">🦋</div>
+
+        <div style="z-index: 10;">
+            <p style="letter-spacing: 5px; color: #0d47a1; font-size: 0.9rem; font-weight: 600;">BIENVENIDOS A</p>
+            <p style="font-size: 1.2rem; font-weight: 300; margin-top: 10px; color: #1565c0;">Mis XV años</p>
+            <h1 class="nombre-viri" style="font-size: 6rem; color: #1976d2; text-shadow: 2px 2px 0px #fff, 4px 4px 15px rgba(0,0,0,0.1);">Viri</h1>
+            <button id="btnAbrir" class="btn-premium" style="margin-top: 30px; padding: 18px 50px; background: linear-gradient(135deg, #42a5f5, #1565c0); border: 2px solid white;">💙 ABRIR INVITACIÓN</button>
+            <p style="margin-top: 15px; font-size: 0.7rem; color: #1976d2; font-style: italic; font-weight: bold;">Se recomienda activar el sonido</p>
+        </div>
+    </div>
+
+    <div id="btnFlotante" onclick="reabrirPopup()">📝</div>
+
+    <div class="container" id="main-content">
+        <section class="hero-section">
+            <p style="letter-spacing: 4px; font-size: 0.8rem;">MIS XV AÑOS</p>
+            <h1 class="nombre-viri">Viri</h1>
+            <div style="background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(5px); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.3); width: 85%;">
+                <p>MARTES | 30 | DICIEMBRE</p>
+                <p style="font-size: 0.7rem; margin-top: 10px;">FALTAN:</p>
+                <div style="display: flex; justify-content: center; gap: 10px; margin-top: 5px; font-weight: bold;">
+                    <span id="d">00</span>D : <span id="h">00</span>H : <span id="m">00</span>M
+                </div>
+            </div>
+        </section>
+
+        <section class="menciones reveal">
+            <p style="font-size: 1.5rem;">୨🎀୧</p>
+            <h2 class="label-honor">Quinceañera</h2>
+            <p class="nombre-honor">Viridiana Vital Morales</p>
+            <h2 class="label-honor">Mis Padres</h2>
+            <p class="nombre-honor">Veronica Morales</p>
+            <p class="nombre-honor">Everardo Vital</p>
+            <h2 class="label-honor">Mis Padrinos</h2>
+            <p class="nombre-honor">Ticco Cain</p>
+            <p class="nombre-honor">Guss Guss</p>
+        </section>
+
+        <section class="ubicaciones-section reveal">
+            <div style="margin-bottom: 50px;">
+                <img src="https://cdn-icons-png.flaticon.com/512/3616/3616521.png" class="icon-gold" alt="Church">
+                <h2 style="font-family: 'Great Vibes'; font-size: 2.5rem; color: #333;">Ceremonia Religiosa</h2>
+                <p style="letter-spacing: 1px; font-weight: 600;">IGLESIA SAN FRANCISCO DE ASIS</p>
+                <p>5:00 P.M.</p>
+                <a href="https://maps.app.goo.gl/DAt1zZ84mdJVtiRr6" target="_blank" class="btn-premium">VER UBICACIÓN</a>
+            </div>
+            <div>
+                <img src="https://cdn-icons-png.flaticon.com/512/3168/3168018.png" class="icon-gold" alt="Party">
+                <h2 style="font-family: 'Great Vibes'; font-size: 2.5rem; color: #333;">Recepción</h2>
+                <p style="letter-spacing: 1px; font-weight: 600;">EDIFICIO MAGNOLIA</p>
+                <p>6:30 P.M.</p>
+                <a href="https://maps.app.goo.gl/DAt1zZ84mdJVtiRr6" target="_blank" class="btn-premium">VER UBICACIÓN</a>
+            </div>
+        </section>
+
+        <section class="reveal" style="background-color: #fdfbfb; padding: 60px 20px;">
+            <h2 style="font-family: 'Great Vibes'; font-size: 3rem; color: var(--rosa); margin-bottom: 30px;">Itinerario</h2>
+            <div style="position: relative; max-width: 300px; margin: 0 auto; text-align: left; border-left: 2px solid var(--rosa-claro); padding-left: 30px;">
+                <div style="margin-bottom: 30px; position: relative;">
+                    <div style="position: absolute; left: -41px; top: 0; width: 20px; height: 20px; background: var(--rosa); border-radius: 50%; border: 4px solid white;"></div>
+                    <p style="font-weight: bold; color: var(--oro);">5:00 P.M.</p>
+                    <p style="font-size: 0.9rem; font-weight: 600;">CEREMONIA RELIGIOSA</p>
+                    <p style="font-size: 0.8rem; color: #666;">Parroquia San Francisco de Asís</p>
+                </div>
+                <div style="margin-bottom: 30px; position: relative;">
+                    <div style="position: absolute; left: -41px; top: 0; width: 20px; height: 20px; background: var(--rosa); border-radius: 50%; border: 4px solid white;"></div>
+                    <p style="font-weight: bold; color: var(--oro);">6:30 P.M.</p>
+                    <p style="font-size: 0.9rem; font-weight: 600;">RECEPCIÓN</p>
+                    <p style="font-size: 0.8rem; color: #666;">Bienvenida de invitados</p>
+                </div>
+                <div style="margin-bottom: 30px; position: relative;">
+                    <div style="position: absolute; left: -41px; top: 0; width: 20px; height: 20px; background: var(--rosa); border-radius: 50%; border: 4px solid white;"></div>
+                    <p style="font-weight: bold; color: var(--oro);">8:00 P.M.</p>
+                    <p style="font-size: 0.9rem; font-weight: 600;">EL VALS</p>
+                    <p style="font-size: 0.8rem; color: #666;">Momento especial de la Quinceañera</p>
+                </div>
+                <div style="margin-bottom: 30px; position: relative;">
+                    <div style="position: absolute; left: -41px; top: 0; width: 20px; height: 20px; background: var(--rosa); border-radius: 50%; border: 4px solid white;"></div>
+                    <p style="font-weight: bold; color: var(--oro);">9:00 P.M.</p>
+                    <p style="font-size: 0.9rem; font-weight: 600;">LA CENA</p>
+                    <p style="font-size: 0.8rem; color: #666;">Banquete en honor a Viri</p>
+                </div>
+                <div style="position: relative;">
+                    <div style="position: absolute; left: -41px; top: 0; width: 20px; height: 20px; background: var(--rosa); border-radius: 50%; border: 4px solid white;"></div>
+                    <p style="font-weight: bold; color: var(--oro);">10:30 P.M.</p>
+                    <p style="font-size: 0.9rem; font-weight: 600;">¡A BAILAR!</p>
+                    <p style="font-size: 0.8rem; color: #666;">Apertura de pista</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="reveal" style="background-color: #fff; padding: 50px 20px;">
+            <h2 style="font-family: 'Great Vibes'; font-size: 2.8rem; color: var(--rosa);">Código de vestimenta</h2>
+            <p style="letter-spacing: 2px; font-weight: 300; margin-bottom: 20px;">FORMAL</p>
+            <div style="margin: 30px 0;"><img src="https://cdn-icons-png.flaticon.com/512/3534/3534312.png" width="80" style="opacity: 0.8;"></div>
+            <h2 style="font-family: 'Great Vibes'; font-size: 2.8rem; color: var(--rosa);">Colores reservados</h2>
+            <div style="display: flex; justify-content: center; gap: 20px; margin-top: 25px;">
+                <div style="width: 60px; height: 60px; background-color: #fce4ec; border-radius: 50%; border: 4px solid white;"></div>
+                <div style="width: 60px; height: 60px; background: var(--oro); border-radius: 50%; border: 4px solid white;"></div>
+            </div>
+        </section>
+
+        <section id="final-section" class="reveal" style="background: var(--rosa-claro); padding: 50px 20px; padding-bottom: 100px;">
+            <img src="https://cdn-icons-png.flaticon.com/512/679/679720.png" width="40" style="margin-bottom: 15px; filter: opacity(0.5);">
+            <p>"Compartir este día contigo es el regalo más especial..."</p>
+            <p style="font-weight: bold; margin-top: 15px; color: var(--oro);">LLUVIA DE SOBRES</p>
+        </section>
+    </div>
+
+    <div id="confirmPopup">
+        <h3 style="font-family: 'Great Vibes'; font-size: 2.2rem; color: var(--rosa);">¿Nos acompañas?</h3>
+        
+        <div style="text-align: left; margin-top: 15px;">
+            <label style="font-size: 0.7rem; font-weight: bold; color: #666;">NOMBRE DE LA FAMILIA O INVITADO:</label>
+            <input type="text" id="nombreInvitado" class="input-form" placeholder="Ej. Familia Sánchez">
+            
+            <label style="font-size: 0.7rem; font-weight: bold; color: #666;">NÚMERO DE PERSONAS:</label>
+            <select id="cantidadAsistentes" class="input-form">
+                <option value="1">1 Persona</option>
+                <option value="2">2 Personas</option>
+                <option value="3">3 Personas</option>
+                <option value="4">4 Personas</option>
+                <option value="5">5 Personas o más</option>
+            </select>
+        </div>
+
+        <button onclick="enviarWhatsApp()" class="btn-premium" style="background: #25d366; width: 100%; border: none;">CONFIRMAR POR WHATSAPP</button>
+        <p id="closePopup" style="margin-top: 15px; font-size: 0.7rem; text-decoration: underline; cursor: pointer; color: #999;">Cerrar</p>
+    </div>
+
+    <audio id="musica" loop><source src="tu-cancion.mp3.mp3" type="audio/mpeg"></audio>
+
+    <script>
+        const btnAbrir = document.getElementById('btnAbrir');
+        const landing = document.getElementById('landing');
+        const mainContent = document.getElementById('main-content');
+        const musica = document.getElementById('musica');
+        const confirmPopup = document.getElementById('confirmPopup');
+        const btnFlotante = document.getElementById('btnFlotante');
+        let popupShown = false;
+
+        btnAbrir.addEventListener('click', () => {
+            musica.play();
+            landing.style.opacity = "0";
+            setTimeout(() => {
+                landing.style.display = "none";
+                mainContent.style.display = "block";
+                setTimeout(() => { mainContent.style.opacity = "1"; }, 50);
+            }, 1000);
+        });
+
+        const target = new Date("Dec 30, 2025 17:00:00").getTime();
+        setInterval(() => {
+            const diff = target - new Date().getTime();
+            document.getElementById('d').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById('h').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById('m').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        }, 1000);
+
+        window.addEventListener("scroll", () => {
+            const finalSection = document.getElementById('final-section');
+            if (finalSection.getBoundingClientRect().top < window.innerHeight && !popupShown) {
+                popupShown = true;
+                setTimeout(() => {
+                    confirmPopup.style.bottom = "0";
+                }, 5000); 
+            }
+
+            document.querySelectorAll(".reveal").forEach(el => {
+                if (el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add("active");
+            });
+        });
+
+        document.getElementById('closePopup').addEventListener('click', () => {
+            confirmPopup.style.bottom = "-100%";
+            btnFlotante.style.display = "flex"; 
+        });
+
+        function reabrirPopup() {
+            confirmPopup.style.bottom = "0";
+            btnFlotante.style.display = "none"; 
+        }
+
+        function enviarWhatsApp() {
+            const nombre = document.getElementById('nombreInvitado').value;
+            const cantidad = document.getElementById('cantidadAsistentes').value;
+            const telefono = "525619785554"; 
+
+            if (nombre.trim() === "") {
+                alert("Por favor, escribe tu nombre para confirmar.");
+                return;
+            }
+
+            const mensaje = `¡Hola! Confirmo mi asistencia a los XV de Viri.%0A%0A*Nombre:* ${nombre}%0A*Asistentes:* ${cantidad}%0A%0A¡Muchas gracias! ✨`;
+            window.open(`https://wa.me/${telefono}?text=${mensaje}`, '_blank');
+        }
+    </script>
+</body>
+</html>
